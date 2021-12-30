@@ -1,12 +1,21 @@
-// Datepicker 
+document.getElementById("dateInput").addEventListener("change", function () {
+    var input = this.value;
+    var d = new Date(input);
 
-$( function() {
-    $( "#datepicker" ).datepicker({
-        dateFormat: "dd.mm.yy"
-    });
-  } );
+    function formattedDate(d = new Date) {
+        let month = String(d.getMonth() + 1);
+        let day = String(d.getDate());
+        const year = String(d.getFullYear());
 
-  alert(datepicker)
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return `${day}/${month}/${year}`;
+    }
+
+    alert(formattedDate(d)); //e.g. 2015-11-13
+   
+});
 
 let myHeaders = new Headers();
 myHeaders.append("Content-Type", "text/plain");
@@ -22,14 +31,14 @@ let requestOptions = {
 };
 const list = document.getElementById('list');
 
-    fetch("https://api.novaposhta.ua/v2.0/json/", requestOptions)
-        .then(response => response.json())
-        .then(result => {
-            result.data.forEach(item => {
-                const li = document.createElement('li');
-                li.innerHTML = ` ${ item.IntDocNumber } ${ item.RecipientContactPerson } ${ item.RecipientsPhone }`;
-                list.appendChild(li);
-            })
+fetch("https://api.novaposhta.ua/v2.0/json/", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        result.data.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = ` ${item.IntDocNumber} ${item.RecipientContactPerson} ${item.RecipientsPhone}`;
+            list.appendChild(li);
         })
-        .catch(error => console.log('error', error));
-        
+    })
+    .catch(error => console.log('error', error));
+
