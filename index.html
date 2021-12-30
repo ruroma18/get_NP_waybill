@@ -1,38 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Test</title>
-</head>
-<body>
-<h1>Накладные Новая Почта!</h1>
-<ul id="list"></ul>
-<script>
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "text/plain");
-    myHeaders.append("Cookie", "PHPSESSID=58235f830633492d9c13b243c718d2f8; YIICSRFTOKEN=9764a6debc7d5fad5df6c76c86f245603b9a1da4s%3A88%3A%22VWJTMkRENjBZa1FDUkZvT292eVBLeXlTblNZSk5CbmaSKVwQwb8QOWL7OMp3e92LV6KdoZFaQ8lQOsK89L9Z4A%3D%3D%22%3B");
-
-    const raw = "{\r\n\"apiKey\": \"bec73876611e8f64f9915f4cee118554\",\r\n\"modelName\": \"InternetDocument\",\r\n\"calledMethod\": \"getDocumentList\",\r\n\"methodProperties\": {\r\n\"GetFullList\": \"1\"\r\n}\r\n}";
-
-    const requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-    };
-
-    const list = document.getElementById('list');
-
-    fetch("https://api.novaposhta.ua/v2.0/json/", requestOptions)
-        .then(response => response.json())
-        .then(result => {
-            result.data.forEach(item => {
-                const li = document.createElement('li');
-                li.innerHTML = ` ${ item.IntDocNumber } ${ item.RecipientContactPerson } ${ item.RecipientsPhone }`;
-                list.appendChild(li);
-            })
-        })
-        .catch(error => console.log('error', error));
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Накладные "Новая почта"</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script src="./index.js"></script>
+  </head>
+  <body>
+    <h1>Накладные Новая Почта!</h1>
+    <div>
+        <h2>Выбери дату</h2>
+        <p>Date: <input type="text" id="datepicker"></p>
+    </div>
+    <ul id="list"></ul>
+  </body>
 </html>

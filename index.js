@@ -1,8 +1,18 @@
+// Datepicker 
+
+$( function() {
+    $( "#datepicker" ).datepicker({
+        dateFormat: "dd.mm.yy"
+    });
+  } );
+
+  alert(datepicker)
+
 let myHeaders = new Headers();
 myHeaders.append("Content-Type", "text/plain");
 myHeaders.append("Cookie", "PHPSESSID=58235f830633492d9c13b243c718d2f8; YIICSRFTOKEN=9764a6debc7d5fad5df6c76c86f245603b9a1da4s%3A88%3A%22VWJTMkRENjBZa1FDUkZvT292eVBLeXlTblNZSk5CbmaSKVwQwb8QOWL7OMp3e92LV6KdoZFaQ8lQOsK89L9Z4A%3D%3D%22%3B");
 
-let raw = "{\r\n\"apiKey\": \"d01aa3752730451f5b0b3d3f0dcaddeb\",\r\n\"modelName\": \"InternetDocument\",\r\n\"calledMethod\": \"getDocumentList\",\r\n\"methodProperties\": {\r\n\"DateTime\": \"12.12.2020\",\r\n\"Page\": \"1\",\r\n\"GetFullList\": \"0\"\r\n}\r\n}";
+let raw = "{\r\n\"apiKey\": \"bec73876611e8f64f9915f4cee118554\",\r\n\"modelName\": \"InternetDocument\",\r\n\"calledMethod\": \"getDocumentList\",\r\n\"methodProperties\": {\r\n\"DateTime\": \"29.12.2021\",\r\n\"GetFullList\": \"1\"\r\n}\r\n}";
 
 let requestOptions = {
     method: 'POST',
@@ -10,28 +20,16 @@ let requestOptions = {
     body: raw,
     redirect: 'follow'
 };
+const list = document.getElementById('list');
 
-fetch("https://api.novaposhta.ua/v2.0/json/", requestOptions)
-    .then(response => response.json())
-    .then(result => {
-        let string = '';
-        result.data.forEach(item => {
-            string += `ТТН: ${ item.IntDocNumber }\nИмя: ${ item.RecipientContactPerson }\nНомер: ${ item.RecipientsPhone }\n\n`;
+    fetch("https://api.novaposhta.ua/v2.0/json/", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            result.data.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = ` ${ item.IntDocNumber } ${ item.RecipientContactPerson } ${ item.RecipientsPhone }`;
+                list.appendChild(li);
+            })
         })
-        downloadString(string, 'txt', 'result');
-    })
-    .catch(error => console.log('error', error));
-
-function downloadString(text, fileType, fileName) {
-    let blob = new Blob([text], { type: fileType });
-    let a = document.createElement('a');
-
-    a.download = fileName;
-    a.href = URL.createObjectURL(blob);
-    a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
-    a.innerHTML = 'DOWNLOAD INFO';
-    document.body.appendChild(a);
-    a.onclick = () => setTimeout(function () {
-        URL.revokeObjectURL(a.href);
-    }, 1500);
-}
+        .catch(error => console.log('error', error));
+        
